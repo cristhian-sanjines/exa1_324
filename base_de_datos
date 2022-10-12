@@ -1,0 +1,85 @@
+Exa1
+create table Departamento(
+    idDepartamento integer not null,
+    nombre varchar(30),
+    abreviacionDep varchar(2),
+    primary key(idDepartamento)
+);
+create table Persona(
+    ci integer not null,
+    nombreCompleto varchar(100),
+    fechaNacimiento date,
+    idDepartamento integer not null,
+    primary key(ci),
+    foreign key(idDepartamento) references Departamento(idDepartamento)
+);
+create table Acceso(
+    usuario varchar(50) not null,
+    ci integer not null,
+    p_password varchar(50),
+    Primary key(usuario),
+    foreign key(ci) references Persona(ci)
+);
+
+create table Inscripcion(
+    sigla varchar(10) not null,
+    CIestudiante integer not null,
+    nota1 integer,
+    nota2 integer,
+    nota3 integer,
+    notaFinal integer,
+    primary key(sigla),
+    foreign key(CIestudiante) references Persona(ci)
+);
+
+
+--Insercion de valores
+
+INSERT INTO Departamento(idDepartamento, nombre, abreviacionDep)
+VALUES
+(02, 'La Paz', 'LP'),
+(03,'Cochabamba','CB'),
+(04,'Oruro','OR'),
+(05,'Potosí','PT'),	
+(06,'Tarija','TJ'),	
+(07,'Santa Cruz','SC'),
+(08,'Beni','BE'),
+(09,'Pando','PD');
+
+INSERT INTO Persona(ci, nombreCompleto, fechaNacimiento, idDepartamento)
+values (13, 'Alexander Ramos Quintanilla', '1999-12-05', 03),
+(14, 'Jessica Castillo', '1999-09-21', 02),
+(15, 'Salem Gutierrez', '2000-03-03', 02),
+(16, 'Alberto Castillo', '1999-05-21', 02),
+(17, 'Luis Arce', '1999-5-06', 04),
+(18, 'Evo Morales', '1999-4-08', 08),
+(19, 'Juan Azuduy', '1999-05-01', 03);
+
+INSERT INTO Acceso(usuario, ci, p_password)
+VALUES('alexander', 13, '123'),
+('jessica', 14, '123'),
+('salem', 15, '123'),
+('alberto', 16, '123'),
+('luis', 17, '123'),
+('evo', 18, '123'),
+('juan', 19, '123');
+
+INSERT INTO Inscripcion(sigla, CIestudiante, nota1, nota2, nota3, notaFinal)
+VALUES
+('inf121', 13, 100, 90, 100, 96),
+('inf111', 14, 90, 90, 90, 90),
+('inf131', 15, 80, 80, 80, 80),
+('inf164', 16, 65, 65, 65, 65),
+('inf144', 17, 78, 78, 78, 78);
+
+
+---creacion de rol
+create user Cristofer
+Identified by 123;
+
+create role Director with SUPERUSER LOGIN
+password '123' in role  ;--
+
+grant Select, Insert on system.Persona to Director;
+
+grant Director to Cristofer;
